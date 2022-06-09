@@ -6,6 +6,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uz.isystem.certificateservicesecond.exception.BadRequest;
 import uz.isystem.certificateservicesecond.model.Certificate;
@@ -25,6 +26,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CertificateService {
+    @Value("${certificateUrl}")
+    private String serverIp;
     private CertificateRepository certificateRepository;
     private UserService userService;
     private DirectionService directionService;
@@ -32,8 +35,8 @@ public class CertificateService {
     public boolean create(Certificate certificate) {
         String token = UUID.randomUUID().toString();
         String YMD = getYMD();
-        String urlQR = "http://localhost:8080/certificates/" + token;
-        String url = "http://localhost:8080/api/v1/certificates/get" + token;
+        String urlQR = "http://185.217.131.77/certificates/" + token;
+        String url = "http://185.217.131.77/api/v1/certificates/get" + token;
 
         BufferedImage QR = generateQR(urlQR);
 

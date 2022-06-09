@@ -26,8 +26,6 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CertificateService {
-    @Value("${certificateUrl}")
-    private String serverIp;
     private CertificateRepository certificateRepository;
     private UserService userService;
     private DirectionService directionService;

@@ -40,6 +40,7 @@ public class CertificateService {
 
         BufferedImage QR = generateQR(urlQR);
 
+        System.out.println(assets);
 
         String path =assets + YMD + "/" + token + ".png";
 

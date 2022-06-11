@@ -5,8 +5,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.isystem.certificateservicesecond.exception.BadRequest;
 import uz.isystem.certificateservicesecond.model.Certificate;
@@ -24,11 +23,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class CertificateService {
+    @Autowired
     private CertificateRepository certificateRepository;
+    @Autowired
     private UserService userService;
+    @Autowired
     private DirectionService directionService;
+    private String assets = System.getProperty("user.dir") + "/assets/";
 
     public boolean create(Certificate certificate) {
         String token = UUID.randomUUID().toString();
@@ -38,9 +40,10 @@ public class CertificateService {
 
         BufferedImage QR = generateQR(urlQR);
 
-        String path = "assets/" + YMD + "/" + token + ".png";
 
-        File folder = new File("assets/" + YMD);
+        String path =assets + YMD + "/" + token + ".png";
+
+        File folder = new File(assets + YMD);
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -64,7 +67,7 @@ public class CertificateService {
     }
 
     private void generateImage(BufferedImage qr, Certificate certificate, String path) {
-        String originalPath = "assets/" + "certificate.jpg";
+        String originalPath = assets + "certificate.jpg";
         BufferedImage image;
         try {
             image = ImageIO.read(new File(originalPath));
@@ -130,7 +133,7 @@ public class CertificateService {
         try {
             QRCodeWriter writer = new QRCodeWriter();
             BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, 350, 350);
-            ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", new File("assets/" + "qr" + ".png"));
+            ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", new File(assets + "qr" + ".png"));
             return MatrixToImageWriter.toBufferedImage(bitMatrix);
         } catch (WriterException | IOException e) {
             throw new RuntimeException(e);

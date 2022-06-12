@@ -38,9 +38,10 @@ public class CertificateService {
         String urlQR = "http://185.217.131.77/certificates/" + token;
         String url = "http://185.217.131.77/api/v1/certificates/get" + token;
 
+        System.out.println(assets);
+
         BufferedImage QR = generateQR(urlQR);
 
-        System.out.println(assets);
 
         String path =assets + YMD + "/" + token + ".png";
 
